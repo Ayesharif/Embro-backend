@@ -6,12 +6,12 @@ import { HttpError } from '../utils/httpError.js'
 import { parse, v } from '../utils/validation.js'
 
 const router = Router()
-const ALLOWED_FORMATS = 'jpg,jpeg,png,webp,avif'
+const ALLOWED_FORMATS = 'jpg,jpeg,png,webp,avif,PNG,WEBP,AVIF,JPG,JPEG'
 
 router.post('/signature', requireAuth, requireRole(...ROLE_GROUPS.catalog), (request, response) => {
   const { cloudName, apiKey, apiSecret } = env.cloudinary
   if (!cloudName || !apiKey || !apiSecret) throw new HttpError(503, 'CLOUDINARY_NOT_CONFIGURED', 'Image uploads are not configured.')
-  const { folder = 'lembro' } = parse({ folder: v.optional(v.string({ min: 1, max: 60, pattern: /^lembro(\/[a-z0-9_-]+)*$/ })) }, request.body ?? {})
+  const { folder = 'embro' } = parse({ folder: v.optional(v.string({ min: 1, max: 60, pattern: /^embro(\/[a-z0-9_-]+)*$/ })) }, request.body ?? {})
   const timestamp = Math.floor(Date.now() / 1000)
   // Parameters must be signed in alphabetical order. Restricting formats here means the
   // signature itself rejects non-image uploads.
